@@ -1,5 +1,5 @@
 /**
- * Created by Javier on 13/08/2017.
+ * Created by Bryan on 20/02/2018.
  */
 module.exports = {
   registrarUsuarios: function(req,res){
@@ -13,16 +13,16 @@ module.exports = {
 
 
 
-  inicioEventos: function(req,res){
+  inicioEventos: function(request,result){
 
-    var parametros = req.allParams();
+    var parametros = request.allParams();
 
     /*Evento.find().exec(
       function(err, eventosEncontrados){
         if (err){
-          return res.serverError(err);
+          return result.serverError(err);
         }else{
-          return res.view('inicioEventos',{eventos:eventosEncontrados})
+          return result.view('inicioEventos',{eventos:eventosEncontrados})
         }
 
       }*/
@@ -40,24 +40,23 @@ module.exports = {
               contains: parametros.busqueda
             }
           },
-
         ]
       })
       .exec(function (err, eventos) {
         if (err)
-          return res.negotiate(err);
-        var cookies = req.cookies;
+          return result.negotiate(err);
+        var cookies = request.cookies;
         console.log(cookies.arregloEventos);
         if (cookies.arregloEventos) {
           var arregloEventos = cookies.arregloEventos.ids;
           console.log(arregloEventos);
-          return res.view('inicioEventos', {
+          return result.view('inicioEventos', {
             eventos: eventos,
             arregloEventos: arregloEventos
           });
         }
         else {
-          return res.view('inicioEventos', {
+          return result.view('inicioEventos', {
             eventos: eventos
           });
         }

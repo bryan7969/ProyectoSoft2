@@ -7,8 +7,8 @@
 
 module.exports = {
 
-  crearEvento: function (req,res){
-    var parametros = req.allParams();
+  crearEvento: function (request,result){
+    var parametros = request.allParams();
     sails.log.info("Parametros",parametros);
 
     var nuevoEvento = {
@@ -31,38 +31,38 @@ module.exports = {
 
     Evento.create(nuevoEvento).exec(function(error, eventoCreado){
       if(error){
-        return res.serverError(error);
+        return result.serverError(error);
       }
       else{
-        return res.redirect("/Vista/inicioEventos");
+        return result.redirect("/Vista/inicioEventos");
       }
     });
 
   },
 
-  detalleEvento: function (req, res) {
-    var parametros = req.allParams();
+  detalleEvento: function (request, result) {
+    var parametros = request.allParams();
     if (parametros.id) {
       Evento.findOne({
         id: parametros.id
       })
         .exec(function (err, eventoEncontrado) {
           if (err)
-            return res.serverError(err);
+            return result.serverError(err);
           if (eventoEncontrado) {
             //Si encontro
-            return res.view('detalleEvento', {
+            return result.view('detalleEvento', {
               evento: eventoEncontrado
             });
           }
           else {
             //No encontro
-            return res.redirect('/inicio');
+            return result.redirect('/inicio');
           }
         });
     }
     else {
-      return res.redirect('/inicio');
+      return result.redirect('/inicio');
     }
   }
 
